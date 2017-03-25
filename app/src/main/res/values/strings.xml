@@ -18,4 +18,11 @@
     <string name="contact">Contact</string>
     <string name="about">About</string>
     <string name="otras_opciones">Otras Opciones</string>
+
+    <!-- Fragment Stadistic -->
+    <string name="day">Día</string>
+    <string name="week">Semana</string>
+    <string name="grams">gramos</string>
+    <string name="calories">calorías</string>
+    <string name="proteins">proteínas</string>
 </resources>

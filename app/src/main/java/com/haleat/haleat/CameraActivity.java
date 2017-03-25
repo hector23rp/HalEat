@@ -2,6 +2,7 @@ package com.haleat.haleat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +32,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -48,9 +49,8 @@ public class CameraActivity extends AppCompatActivity {
     private TextureView textureView;
     private ImageButton takePictureButton;  //Botón de la cámara para realizar la foto
     private ImageButton menuButton; //Botón para acceder al panel lateral de la pantalla.
-    private ListView panel; //Panel lateral de la pantalla.
     private DrawerLayout mDrawerLayout; //Layout principal
-
+    private NavigationView mNavigationView;  //Panel lateral de la pantalla
     private ArrayAdapter<String> mAdapter;
     private String cameraId; //ID de la camara
     private Size imageDimension;
@@ -106,6 +106,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         textureView = (TextureView) findViewById(R.id.texture);
         textureView.setSurfaceTextureListener(textureListener);
         takePictureButton = (ImageButton) findViewById(R.id.btn_takepicture);
@@ -116,11 +117,54 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
         menuButton = (ImageButton) findViewById(R.id.btn_menu);
-        /*menuButton.setOnClickListener(new View.OnClickListener(){
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                launchMenuActivity();
+                launchMainActivity();
+            }
+        });
+        /*mNavigationView = (NavigationView) findViewById(R.id.navview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if(menuItem.isChecked())
+                    menuItem.setChecked(false);
+                else
+                    menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                mDrawerLayout.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()){
+
+
+                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    case R.id.menu_camera:
+                        Toast.makeText(getApplicationContext(),"Camera Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+
+                    // For rest of the options we just show a toast on click
+
+                    case R.id.menu_stadistic:
+                        launchMainActivity();
+                        return true;
+                    default:
+                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        return true;
+
+                }
             }
         });*/
+    }
+
+    private void launchMainActivity(){
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     public void onPause(){
